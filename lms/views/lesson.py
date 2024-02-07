@@ -2,7 +2,8 @@
 Вьюшки Generic-классы для класса Уроки
 """
 
-from rest_framework.generics import RetrieveAPIView, DestroyAPIView, ListAPIView, UpdateAPIView, CreateAPIView
+from rest_framework.generics import (RetrieveAPIView, DestroyAPIView,
+                                     ListAPIView, UpdateAPIView, CreateAPIView)
 
 from lms.models import Lesson
 from lms.serializers.lesson import LessonSerializer
