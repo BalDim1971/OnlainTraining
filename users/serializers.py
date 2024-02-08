@@ -7,7 +7,6 @@ class UserSerializer(serializers.ModelSerializer):
     """
     Сериализатор пользователя
     """
-    
     date_joined = serializers.DateTimeField(format="%Y-%m-%d")
     
     class Meta:
