@@ -12,10 +12,9 @@ class Course(models.Model):
     """
 
     name = models.CharField(max_length=100, verbose_name='наименование')
-    preview = models.ImageField(
-        upload_to='course_previews/',
-        verbose_name='картинка',
-        **NULLABLE)
+    preview = models.ImageField(upload_to='course_previews/',
+                                verbose_name='картинка',
+                                **NULLABLE)
     description = models.TextField(verbose_name='описание')
 
     def __str__(self):
@@ -25,6 +24,9 @@ class Course(models.Model):
         verbose_name = 'курс'
         verbose_name_plural = 'курсы'
         ordering = ['name',]
+        indexes = [
+            models.Index(fields=['name']),
+        ]
 
 
 class Lesson(models.Model):
@@ -33,16 +35,12 @@ class Lesson(models.Model):
     """
 
     name = models.CharField(max_length=100, verbose_name='название урока')
-    preview = models.ImageField(
-        upload_to='lesson_previews/',
-        verbose_name='картинка',
-        **NULLABLE)
+    preview = models.ImageField(upload_to='lesson_previews/',
+                                verbose_name='картинка', **NULLABLE)
     description = models.TextField(verbose_name='описание')
     video_url = models.URLField(verbose_name='видеоурок', **NULLABLE)
-    course = models.ForeignKey(
-        Course,
-        on_delete=models.CASCADE,
-        related_name='курс')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,
+                               related_name='курс')
 
     def __str__(self):
         return self.name
