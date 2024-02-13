@@ -3,7 +3,7 @@
 """
 
 from django.db import models
-from users.models import NULLABLE
+NULLABLE = {'blank': True, 'null': True}
 
 
 class Course(models.Model):

@@ -2,9 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import CASCADE
 
-from lms.models import Lesson, Course
-
-NULLABLE = {'blank': True, 'null': True}
+from lms.models import Lesson, Course, NULLABLE
 
 
 class User(AbstractUser):
