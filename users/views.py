@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework.response import Response
 
-from users.models import User
-from users.serializers import UserSerializer
+from users.models import User, Payment
+from users.serializers import UserSerializer, PaymentSerializer
 
 
 class UserViewSet(viewsets.ViewSet):
@@ -36,3 +36,11 @@ class UserViewSet(viewsets.ViewSet):
         user = get_object_or_404(queryset, pk=pk)
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+
+class PaymentListApiView(generics.ListAPIView):
+    """
+    Класс для формирования списка платежей
+    """
+    serializer_class = PaymentSerializer
+    queryset = Payment.objects.all()

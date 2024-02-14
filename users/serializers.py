@@ -31,8 +31,10 @@ class UserSerializer(serializers.ModelSerializer):
             'phone',
             'avatar',
             'city',
-            'is_staff',
-            'is_active',
             'date_joined',
-            'history_payment'
+            'history_payment',
+            'is_staff',
+            'is_active'
         ]
+    def get_history_payment(self, instance):
+        return instance.history_payment

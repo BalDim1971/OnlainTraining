@@ -23,10 +23,6 @@ class Course(models.Model):
     class Meta:
         verbose_name = 'курс'
         verbose_name_plural = 'курсы'
-        ordering = ['name',]
-        indexes = [
-            models.Index(fields=['name']),
-        ]
 
 
 class Lesson(models.Model):
@@ -48,4 +44,4 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = 'урок'
         verbose_name_plural = 'уроки'
-        ordering = ['course', 'name',]
+        ordering = ('name', 'course',)
