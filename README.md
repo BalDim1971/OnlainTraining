@@ -110,4 +110,26 @@
 не обязательны к выполнению.
 
 
-Используется Python 3.12
+Описание работ для PyCharm в Windows.
+
+1. Создать и активировать виртуальное окружение.
+python -m venv venv
+.\venv\Scripts\activate
+
+2. Установить зависимости проекта, указанные в файле requirements.txt
+pip install -r requirements.txt 
+или средствами PyCharm.
+
+3. Создать файл .env.
+Записать в файл настройки, как в шаблоне .env.sample
+
+Применить миграции
+
+python manage.py migrate users
+python manage.py migrate
+
+Создать суперпользователя
+python manage.py csu
+
+Запустить сервер
+python manage.py runserver
