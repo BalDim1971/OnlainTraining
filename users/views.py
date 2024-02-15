@@ -1,6 +1,8 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, generics
 from rest_framework.response import Response
+from rest_framework.filters import OrderingFilter
 
 from users.models import User, Payment
 from users.serializers import UserSerializer, PaymentSerializer
@@ -45,4 +47,6 @@ class PaymentListApiView(generics.ListAPIView):
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
     search_fields = ['paid_lesson', 'paid_course', 'method_payment']
-    ordering_fields = ['date_of_payment']
+    ordering_fields = ('date_of_payment',)
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ('paid_lesson', 'paid_course', 'method_payment')
