@@ -44,3 +44,5 @@ class PaymentListApiView(generics.ListAPIView):
     """
     serializer_class = PaymentSerializer
     queryset = Payment.objects.all()
+    search_fields = ['paid_lesson', 'paid_course', 'method_payment']
+    ordering_fields = ['date_of_payment']

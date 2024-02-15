@@ -36,6 +36,7 @@ class Lesson(models.Model):
     description = models.TextField(verbose_name='описание')
     video_url = models.URLField(verbose_name='видеоурок', **NULLABLE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE,
+                               verbose_name='курс',
                                related_name='lessons')
 
     def __str__(self):

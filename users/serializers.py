@@ -7,6 +7,7 @@ class PaymentSerializer(serializers.ModelSerializer):
     """
     Сериализатор платежей
     """
+
     class Meta:
         model = Payment
         fields = '__all__'
@@ -17,7 +18,6 @@ class UserSerializer(serializers.ModelSerializer):
     Сериализатор пользователя
     """
     date_joined = serializers.DateTimeField(format="%Y-%m-%d")
-    
     history_payment = PaymentSerializer(many=True, read_only=True,
                                         source='payment_set')
 
@@ -36,5 +36,6 @@ class UserSerializer(serializers.ModelSerializer):
             'is_staff',
             'is_active'
         ]
+
     def get_history_payment(self, instance):
         return instance.history_payment
