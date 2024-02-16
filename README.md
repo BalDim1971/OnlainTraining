@@ -131,8 +131,9 @@ python manage.py migrate
 Создать суперпользователя
 python manage.py csu
 
-Для тестового прогона можно использовать файл test.json:
-python mange.py loaddata test.json
+Для тестового прогона можно использовать файл test.json и users_test.json:
+python manage.py loaddata test.json
+python manage.py loaddata users_test.json
 
 Запустить сервер
 python manage.py runserver
