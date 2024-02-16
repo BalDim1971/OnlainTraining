@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
     """
     date_joined = serializers.DateTimeField(format="%Y-%m-%d")
     history_payment = PaymentSerializer(many=True, read_only=True,
-                                        source='payment_set')
+                                        source='users')
 
     class Meta:
         model = User
