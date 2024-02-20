@@ -6,19 +6,24 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from lms.models import Lesson
+from lms.permissions import IsOwnerOrStaff
 from lms.serializers.lesson import LessonSerializer
 
 
 class LessonListView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsAuthenticated]
 
 
 class LessonCreateView(generics.CreateAPIView):
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        new_lesson = serializer.save()
+        new_lesson.owner = self.request.user
+        new_lesson.save()
+        
 
 class LessonDetailView(generics.RetrieveAPIView):
     serializer_class = LessonSerializer
@@ -34,4 +39,4 @@ class LessonDestroyView(generics.DestroyAPIView):
 class LessonUpdateView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOwnerOrStaff]
