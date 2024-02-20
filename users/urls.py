@@ -1,7 +1,7 @@
 from django.urls import path
 
 from users.apps import UsersConfig
-from users.views import UserViewSet, PaymentListApiView
+from users.views import UserViewSet, MyTokenObtainPairView
 from rest_framework.routers import DefaultRouter
 
 
@@ -12,5 +12,5 @@ router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
 
 urlpatterns = [
-    path('payment/', PaymentListApiView.as_view(), name='payment_list'),
+    path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
 ] + router.urls

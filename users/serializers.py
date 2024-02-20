@@ -1,16 +1,9 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, AuthUser
+from rest_framework_simplejwt.tokens import Token
 
-from users.models import User, Payment
-
-
-class PaymentSerializer(serializers.ModelSerializer):
-    """
-    Сериализатор платежей
-    """
-
-    class Meta:
-        model = Payment
-        fields = '__all__'
+from payments.serializers import PaymentSerializer
+from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -19,7 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
     """
     date_joined = serializers.DateTimeField(format="%Y-%m-%d")
     history_payment = PaymentSerializer(many=True, read_only=True,
-                                        source='users')
+                                        source='payment')
 
     class Meta:
         model = User
@@ -39,3 +32,11 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_history_payment(self, instance):
         return instance.history_payment
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user) -> Token:
+        token = super().get_token(user)
+        token['email'] = user.email
+        return token

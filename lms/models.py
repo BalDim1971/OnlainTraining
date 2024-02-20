@@ -3,7 +3,8 @@
 """
 
 from django.db import models
-NULLABLE = {'blank': True, 'null': True}
+
+from users.models import User, NULLABLE
 
 
 class Course(models.Model):
@@ -16,6 +17,8 @@ class Course(models.Model):
                                 verbose_name='картинка',
                                 **NULLABLE)
     description = models.TextField(verbose_name='описание')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE,
+                              verbose_name='владелец', related_name='course')
 
     def __str__(self):
         return self.name
@@ -38,6 +41,8 @@ class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE,
                                verbose_name='курс',
                                related_name='lessons')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE,
+                              verbose_name='владелец', related_name='lesson')
 
     def __str__(self):
         return self.name

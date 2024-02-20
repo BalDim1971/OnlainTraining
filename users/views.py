@@ -1,11 +1,11 @@
-from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, generics
+from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.filters import OrderingFilter
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-from users.models import User, Payment
-from users.serializers import UserSerializer, PaymentSerializer
+from users.models import User
+from users.serializers import (UserSerializer, PaymentSerializer,
+                               MyTokenObtainPairSerializer)
 
 
 class UserViewSet(viewsets.ViewSet):
@@ -40,13 +40,5 @@ class UserViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
 
-class PaymentListApiView(generics.ListAPIView):
-    """
-    Класс для формирования списка платежей
-    """
-    serializer_class = PaymentSerializer
-    queryset = Payment.objects.all()
-    search_fields = ['paid_lesson', 'paid_course', 'method_payment']
-    ordering_fields = ('date_of_payment',)
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_fields = ('paid_lesson', 'paid_course', 'method_payment')
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
