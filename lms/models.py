@@ -19,6 +19,7 @@ class Course(models.Model):
     description = models.TextField(verbose_name='описание')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE,
                               verbose_name='владелец', related_name='course')
+    is_public = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
