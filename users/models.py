@@ -9,14 +9,16 @@ class UserRoles(models.TextChoices):
     MEMBER = 'member', _('member')
     MODERATOR = 'moderator', _('moderator')
 
+
 class User(AbstractUser):
     """
     Класс, описывающий модель пользователь
     Стандартная модель расширяется:
-    «Аватар»,
-    «Номер телефона»,
-    «Страна».
+    avatar - «Аватар»,
+    phone - «Номер телефона»,
+    country - «Страна».
     Авторизация меняется на email
+    role - обычный пользователь или модератор
     """
     username = None
     email = models.EmailField(max_length=200, verbose_name='электронная почта',

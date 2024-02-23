@@ -2,6 +2,8 @@ from rest_framework.permissions import BasePermission
 
 
 class IsOwnerOrStaff(BasePermission):
+    message = "Доступно владельцу или сервису"
+
     def has_permission(self, request, view):
         if request.user.is_staff:
             return True
