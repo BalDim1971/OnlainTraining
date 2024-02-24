@@ -1,6 +1,7 @@
+from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework import generics, permissions
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from users.models import User
 from users.serializers import UserSerializer, MyTokenObtainPairSerializer
@@ -10,11 +11,22 @@ from users.permissions import IsModerator, IsOwner
 class UserCreateAPIView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
-    def perform_create(self, serializer):
-        new_user = serializer.save()
+    def create(self, request, *args, **kwargs):
+        """Переопределение метода для сохранения хешированного пароля в бд
+        (если пароль не хешируется - пользователь не считается активным и
+        токен авторизации не создается)"""
+        serializer = UserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+
         password = serializer.data["password"]
-        new_user.set_password(password)
-        new_user.save()
+        user = User.objects.get(pk=serializer.data["id"])
+        user.set_password(password)
+        user.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED,
+                        headers=headers)
 
 
 class UserUpdateAPIView(generics.UpdateAPIView):
@@ -22,11 +34,19 @@ class UserUpdateAPIView(generics.UpdateAPIView):
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated, IsOwner]
 
-    def perform_update(self, serializer):
-        new_user = serializer.save()
+    def perform_update(self, request, *args, **kwargs):
+        serializer = UserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+
         password = serializer.data["password"]
-        new_user.set_password(password)
-        new_user.save()
+        user = User.objects.get(pk=serializer.data["id"])
+        user.set_password(password)
+        user.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED,
+                        headers=headers)
 
 
 class UserDestroyAPIView(generics.DestroyAPIView):
@@ -48,5 +68,5 @@ class UserListAPIView(generics.ListAPIView):
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (AllowAny,)
     serializer_class = MyTokenObtainPairSerializer

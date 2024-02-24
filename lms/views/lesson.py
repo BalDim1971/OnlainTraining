@@ -22,6 +22,9 @@ class LessonCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated, ~IsModerator]
 
     def perform_create(self, serializer):
+        """
+        Привязать пользователя к созданному уроку
+        """
         new_lesson = serializer.save()
         new_lesson.owner = self.request.user
         new_lesson.save()

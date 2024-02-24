@@ -10,7 +10,6 @@ class UserSerializer(serializers.ModelSerializer):
     """
     Сериализатор пользователя
     """
-    date_joined = serializers.DateTimeField(format="%Y-%m-%d")
     history_payment = PaymentSerializer(many=True, read_only=True,
                                         source='payment')
 
@@ -19,12 +18,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'email',
+            'password',
             'first_name',
             'last_name',
             'phone',
             'avatar',
             'city',
-            'date_joined',
             'history_payment',
             'is_staff',
             'is_active'
