@@ -20,6 +20,13 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ['id', 'name', 'preview', 'description',
                   'lesson_count', 'lesson']
+        validators = [
+            serializers.UniqueTogetherValidator(
+                queryset=Course.objects.all(),
+                fields=['name',],
+                message='Имя курса должно быть уникальным'
+            )
+        ]
 
     def get_lesson_count(self, instance):
         return instance.lessons.count()

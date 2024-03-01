@@ -1,7 +1,6 @@
 """
 Файл с описанием моделей по курсу обучения и урокам.
 """
-
 from django.db import models
 
 from users.models import User, NULLABLE
@@ -52,3 +51,23 @@ class Lesson(models.Model):
         verbose_name = 'урок'
         verbose_name_plural = 'уроки'
         ordering = ('name', 'course',)
+
+
+class Subscription(models.Model):
+    """
+    Модель подписки на курс
+    """
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE,
+                              verbose_name='владелец')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE,
+                               verbose_name='курс')
+    status = models.BooleanField(default=False, verbose_name='статус подписки',
+                                 **NULLABLE)
+
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+
+    def __str__(self):
+        return f'{self.owner}: {self.course}'

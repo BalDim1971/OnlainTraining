@@ -7,6 +7,7 @@ from lms.views.course import CourseViewSet
 from lms.views.lesson import (LessonListView, LessonCreateView,
                               LessonDetailView, LessonUpdateView,
                               LessonDestroyView)
+from lms.views.subscription import SubscriptionAPIView
 
 app_name = LmsConfig.name
 
@@ -22,4 +23,6 @@ urlpatterns = [
          name='lesson_update'),
     path('lesson/delete/<int:pk>/', LessonDestroyView.as_view(),
          name='lesson_delete'),
+    path('courses/<int:pk>/subscription/', SubscriptionAPIView.as_view(),
+         name='subscription')
 ] + router.urls
