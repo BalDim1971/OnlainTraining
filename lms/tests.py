@@ -39,6 +39,7 @@ class LessonTestCase(APITestCase):
 
         self.course = Course.objects.create(
             name="test_course",
+            owner=self.user
         )
 
         # Создаем тестовый урок
@@ -57,7 +58,8 @@ class LessonTestCase(APITestCase):
             "name": "test",
             "course": 1,
             "video_url": "https://www.youtube.com/",
-            "description": "test description"
+            "description": "test description",
+            "owner": self.user.id
         }
         create_lesson = reverse('lms:lesson_create')
         response = self.client.post(create_lesson, data,

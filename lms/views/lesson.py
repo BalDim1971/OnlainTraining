@@ -13,7 +13,7 @@ from users.permissions import IsOwner, IsModerator
 
 
 class LessonListView(generics.ListAPIView):
-    permission_classes = [IsAuthenticated, IsOwnerOrStaff]
+    permission_classes = [IsAuthenticated]
     pagination_class = LessonPagination
     queryset = Lesson.objects.all()
     

@@ -7,13 +7,13 @@ from lms.validators import VideoValidators
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
-        fields = ['name', 'preview',
+        fields = ['name', 'preview', 'owner',
                   'description', 'video_url', 'course']
         validators = [
             VideoValidators(field='video_url'),
             serializers.UniqueTogetherValidator(
                 queryset=Lesson.objects.all(),
-                fields=['name',],
+                fields=['name', 'owner'],
                 message='Имя урока должно быть уникальным'
             )
         ]
