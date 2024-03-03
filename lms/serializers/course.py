@@ -4,7 +4,7 @@
 
 from rest_framework import serializers
 
-from lms.models import Course
+from lms.models import Course, Subscription
 from lms.serializers.lesson import LessonSerializer
 
 
@@ -15,11 +15,12 @@ class CourseSerializer(serializers.ModelSerializer):
 
     lesson_count = serializers.SerializerMethodField()
     lesson = LessonSerializer(source='lessons', many=True)
+    subscription = serializers.SerializerMethodField()
 
     class Meta:
         model = Course
-        fields = ['id', 'name', 'preview', 'description',
-                  'lesson_count', 'lesson']
+        fields = ['name', 'preview', 'description',
+                  'lesson_count', 'lesson', 'subscription']
         validators = [
             serializers.UniqueTogetherValidator(
                 queryset=Course.objects.all(),
@@ -30,3 +31,13 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def get_lesson_count(self, instance):
         return instance.lessons.count()
+
+    def get_subscription(self, instance):
+        subscription = Subscription.objects.filter(
+            course=instance,
+            owner=self.context.get('request').user
+        ).all()
+        if subscription:
+            return True
+        else:
+            return False

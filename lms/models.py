@@ -59,9 +59,11 @@ class Subscription(models.Model):
     """
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE,
-                              verbose_name='владелец')
+                              verbose_name='владелец',
+                              related_name='subscription')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE,
-                               verbose_name='курс')
+                               verbose_name='курс',
+                               related_name='subscriptions')
     status = models.BooleanField(default=False, verbose_name='статус подписки',
                                  **NULLABLE)
 

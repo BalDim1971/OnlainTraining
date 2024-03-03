@@ -10,21 +10,20 @@ from users.permissions import IsOwner, IsModerator
 
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
-    pagination_class = CoursePagination
     queryset = Course.objects.all()
+    pagination_class = CoursePagination
 
     def get_permissions(self):
         """
         Определяем права доступа по запрашиваемому действию
         :return: Уровень доступа
         """
-        match self.action:
-            case 'create':
-                self.permission_classes = [IsAuthenticated, ~IsModerator]
-            case 'destroy':
-                self.permission_classes = [IsAuthenticated, IsOwner]
-            case _:  # ['list', 'retrieve', 'update']
-                self.permission_classes = [IsAuthenticated, IsOwnerOrStaff]
+        if self.action == 'create':
+            self.permission_classes = [~IsModerator]
+        elif self.action in ['list', 'retrieve', 'update']:
+            self.permission_classes = [IsModerator | IsOwner]
+        elif self.action == 'destroy':
+            self.permission_classes = [IsOwner]  # если владелец является модератором ????
         return [permission() for permission in self.permission_classes]
 
     def perform_create(self, serializer):
