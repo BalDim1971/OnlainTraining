@@ -23,7 +23,7 @@ class CourseViewSet(viewsets.ModelViewSet):
         elif self.action in ['list', 'retrieve', 'update']:
             self.permission_classes = [IsModerator | IsOwner]
         elif self.action == 'destroy':
-            self.permission_classes = [IsOwner]  # если владелец является модератором ????
+            self.permission_classes = [IsOwner]
         return [permission() for permission in self.permission_classes]
 
     def perform_create(self, serializer):
