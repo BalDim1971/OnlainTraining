@@ -19,7 +19,8 @@ class LessonListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated,]
     pagination_class = LessonPagination
     queryset = Lesson.objects.all()
-
+    serializer_class = LessonSerializer
+    
     def get(self, request):
         pagination_queryset = self.paginate_queryset(self.queryset)
         serializer_class = LessonSerializer(pagination_queryset, many=True)
