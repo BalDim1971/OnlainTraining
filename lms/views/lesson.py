@@ -20,7 +20,11 @@ class LessonListView(generics.ListAPIView):
     pagination_class = LessonPagination
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-    
+    filter_fields = ('name', 'description', 'course', 'owner')
+    filterset_fields = ('name', 'description', 'course', 'owner')
+    search_fields = ('^name', )
+    ordering_fields = ('name',)
+
     def get(self, request):
         pagination_queryset = self.paginate_queryset(self.queryset)
         serializer_class = LessonSerializer(pagination_queryset, many=True)

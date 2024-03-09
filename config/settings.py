@@ -154,6 +154,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
@@ -170,12 +172,12 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000', # адрес вашего фронтенд-сервера или * для всех
+    'http://localhost:8000',  # адрес вашего фронтенд-сервера или * для всех
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://read-and-write.example.com", #  адрес вашего фронтенд-сервера
-    "http://localhost:8000", # и добавьте адрес бэкенд-сервера
+    "https://read-and-write.example.com",  # адрес вашего фронтенд-сервера
+    "http://localhost:8000",  # и добавьте адрес бэкенд-сервера
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False

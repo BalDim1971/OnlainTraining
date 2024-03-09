@@ -1,9 +1,7 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
 
 from lms.models import Course
 from lms.paginations.course import CoursePagination
-from lms.permissions import IsOwnerOrStaff
 from lms.serializers.course import CourseSerializer
 from users.permissions import IsOwner, IsModerator
 

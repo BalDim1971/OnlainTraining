@@ -32,6 +32,10 @@ class Payment(models.Model):
                                          verbose_name='сумма оплаты')
     method_payment = models.CharField(max_length=10, choices=PAYMENT_CHOICE,
                                       verbose_name='метод оплаты')
+    payment_url = models.URLField(max_length=400, **NULLABLE,
+                                  verbose_name='ссылка на оплату')
+    payment_id = models.CharField(max_length=100, **NULLABLE,
+                                  verbose_name='идентификатор платежа')
 
     def __str__(self):
         return f'{self.user} оплатил {self.date_of_payment}'

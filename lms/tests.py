@@ -25,23 +25,23 @@ class LessonTestCase(APITestCase):
                          )
         self.user.set_password('123QWE456RTY')
         self.user.save()
-        
+
         response = self.client.post(
             '/users/token/',
             {"email": "test@test.ru", "password": "123QWE456RTY"}
         )
-        
+
         self.access_token = response.json().get('access')
         self.client.credentials(
             HTTP_AUTHORIZATION=f'Bearer {self.access_token}'
         )
         self.headers = {'HTTP_AUTHORIZATION': f'Bearer {self.access_token}'}
-        
+
         self.course = Course.objects.create(
             name="test_course",
-            owner=self.user,
+            owner=self.user
         )
-        
+
         # Создаем тестовый урок
         self.lesson = Lesson.objects.create(
             name="Test Lesson",
@@ -49,7 +49,7 @@ class LessonTestCase(APITestCase):
             course=self.course,
             owner=self.user
         )
-    
+
     def test_create_lesson(self):
         """
         Тест операции создания (create) проверки создания уроков
@@ -65,10 +65,10 @@ class LessonTestCase(APITestCase):
         response = self.client.post(create_lesson, data,
                                     format='json', **self.headers)
         print(response.json())
-        
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.json()['name'], data['name'])
-    
+
     def test_retrieve_lesson(self):
         """
         Тест операции чтения (retrieve) урока
@@ -76,10 +76,10 @@ class LessonTestCase(APITestCase):
         retrieve_url = reverse('lms:lesson_detail',
                                args=[self.lesson.id])
         response = self.client.get(retrieve_url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], self.lesson.name)
-    
+
     def test_update_lesson(self):
         """
         Тест операции обновления (update) урока
@@ -91,12 +91,12 @@ class LessonTestCase(APITestCase):
             "description": "This is an updated lesson",
         }
         response = self.client.patch(update_url, updated_data, format='json')
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.lesson.refresh_from_db()
         self.assertEqual(self.lesson.name, updated_data['name'])
         self.assertEqual(self.lesson.description, updated_data['description'])
-    
+
     def test_delete_lesson(self):
         """
         Тест операции удаления (delete) урока
@@ -104,10 +104,10 @@ class LessonTestCase(APITestCase):
         delete_url = reverse('lms:lesson_delete',
                              args=[self.lesson.id])
         response = self.client.delete(delete_url)
-        
+
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Lesson.objects.filter(id=self.lesson.id).exists())
-    
+
     def test_list_lesson(self):
         """
         Тест операции получения списка уроков
@@ -173,7 +173,7 @@ class CourseTestCase(APITestCase):
         response = self.client.get(course_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['results'][0]['name'], self.course.name)
-    
+
 
 class SubscriptionTestCase(APITestCase):
     def setUp(self) -> None:
@@ -189,30 +189,30 @@ class SubscriptionTestCase(APITestCase):
                          )
         self.user.set_password('123QWE456RTY')
         self.user.save()
-        
+
         response = self.client.post(
             '/users/token/',
             {"email": "test@test.ru", "password": "123QWE456RTY"}
         )
-        
+
         self.access_token = response.json().get('access')
         self.client.credentials(
             HTTP_AUTHORIZATION=f'Bearer {self.access_token}'
         )
         self.headers = {'HTTP_AUTHORIZATION': f'Bearer {self.access_token}'}
-        
+
         # Тестовый курс
         self.course = Course.objects.create(
             name="test_course",
             owner=self.user,
         )
-        
+
         # Создаем тестовую подписку
         self.subscribe = Subscription.objects.create(
             owner=self.user,
             course=self.course,
         )
-    
+
     def test_subscribe_to_course(self):
         """
         Тест операции создания подписки на курс
@@ -222,10 +222,10 @@ class SubscriptionTestCase(APITestCase):
         print(subscribe_url)
         response = self.client.post(subscribe_url, {},
                                     format='json', **self.headers)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['message'], "Вы подписались на курс.")
-    
+
     def test_unsubscribe_from_course(self):
         """
         Тест операции отписки от курса
@@ -236,6 +236,6 @@ class SubscriptionTestCase(APITestCase):
                                     format='json', **self.headers)
         response = self.client.post(subscribe_url, {},
                                     format='json', **self.headers)
-        
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['message'], "Вы отписались от курса.")

@@ -15,7 +15,7 @@ class Course(models.Model):
     preview = models.ImageField(upload_to='course_previews/',
                                 verbose_name='картинка',
                                 **NULLABLE)
-    description = models.TextField(verbose_name='описание')
+    description = models.TextField(verbose_name='описание', **NULLABLE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE,
                               verbose_name='владелец', related_name='course')
     is_public = models.BooleanField(default=False)
