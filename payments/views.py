@@ -4,7 +4,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 
 from lms.permissions import IsOwnerOrStaff
-from lms.services import create_stripe_price, create_stripe_session
+from payments.services import create_stripe_price, create_stripe_session
 from payments.models import Payment
 from payments.serializers import PaymentSerializer
 from users.permissions import IsModerator

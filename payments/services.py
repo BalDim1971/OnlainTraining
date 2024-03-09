@@ -12,7 +12,7 @@ def create_stripe_price(payment):
     stripe_product = stripe.Product.create(name=payment.paid_course.name)
     stripe_price = stripe.Price.create(
         currency='rub',
-        unit_amount=payment.amount_payment * 100,
+        unit_amount=int(payment.amount_payment) * 100,
         product_data={'name': stripe_product['name']},
     )
     return stripe_price['id']
