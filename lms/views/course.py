@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from lms.models import Course
 from lms.paginations.course import CoursePagination
 from lms.serializers.course import CourseSerializer
+from lms.tasks import send_email_for_update_course
 from users.permissions import IsOwner, IsModerator
 
 
@@ -31,3 +32,13 @@ class CourseViewSet(viewsets.ModelViewSet):
         new_course = serializer.save()
         new_course.owner = self.request.user
         new_course.save()
+
+    def perform_update(self, serializer):
+        """
+        Отправить сообщение об изменении курса всем подписанным абонентам
+        :param serializer:
+        :return:
+        """
+        course = serializer.save()
+        course_id = course.id
+        send_email_for_update_course.delay(course_id)
