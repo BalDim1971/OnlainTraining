@@ -16,7 +16,8 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 # приложениях Django
 app.autodiscover_tasks()
 
+
 # Пример задачи
 @app.task(bind=True, ignore_rezult=True)
 def debug_task(self):
-    print(f'Request: {self.request|r}')
+    print(f'Request: {self.request!r}')

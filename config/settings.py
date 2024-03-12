@@ -212,3 +212,15 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': timedelta(days=1),  # Расписание выполнения задачи
     }
 }
+
+CACHE_ENABLED = os.getenv('CACHE_ENABLED') == 'True'
+
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": os.getenv('CACHE_LOCATION'),
+            "TIMEOUT": 60 # Ручная регулировка времени жизни кеша в секундах,
+            # по умолчанию 300
+        }
+    }
