@@ -2,7 +2,7 @@ from celery import shared_task
 from django.core.mail import send_mail
 
 from lms.models import Subscription
-from config import settings
+from django.conf import settings
 
 
 @shared_task
