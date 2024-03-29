@@ -420,3 +420,24 @@ python manage.py runserver
 3. Инструкции по запуску находятся в файле Readme.
 4. Результат выполнения всего задания залили в GitHub и сдали в виде ссылки 
 на репозиторий.
+
+### Настройка DRF в Docker
+#### Сборка без yaml файла
+Сборка докер образа:
+docker build -t my-python-app .
+
+Запуск контейнера:
+docker run my-python-app
+
+#### Сборка с yaml файлом
+Создание образа из Dockerfile:
+docker-compose build
+
+с запуском контейнера:
+docker-compose up --build
+
+с запуском контейнера в фоновом режиме:
+docker-compose up -d --build
+
+Запуск контейнера:
+docker-compose up
