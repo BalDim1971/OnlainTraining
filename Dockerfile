@@ -13,5 +13,5 @@ COPY ./requirements.txt /OnlineTraining/
 RUN pip install -r /OnlineTraining/requirements.txt
 COPY . .
 
-## Команда для запуска Django-сервера
-#CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Команда для запуска Django-сервера
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
