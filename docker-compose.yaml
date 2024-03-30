@@ -3,6 +3,7 @@ version: '3' # Версия указывает на версию синтакс�
 services:
   db:
     image: postgres
+    container_name: postgres_db
     restart: always
     env_file:
       - .env
@@ -28,6 +29,7 @@ services:
 
   app:
     build: .
+    container_name: OnlineTraining
     tty: true
     command: python manage.py migrate && python manage.py runserver 0.0.0.0:8000
     env_file:
@@ -47,6 +49,7 @@ services:
     env_file:
       - .env
     depends_on:
+      - db
       - redis
       - app
 
@@ -57,6 +60,7 @@ services:
     env_file:
       - .env
     depends_on:
+      - db
       - redis
       - app
 
