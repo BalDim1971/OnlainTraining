@@ -6,13 +6,13 @@ services:
     restart: always
     env_file:
       - .env
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - PGDATA=/var/lib/postgresql/data/pgdata
+#    environment:
+#      - POSTGRES_USER=${POSTGRES_USER}
+#      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+#      - POSTGRES_DB=${POSTGRES_DB}
+#      - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
-      - ./pg_data:/var/lib/postgresql/data/pgdata
+      - pgdata:/var/lib/postgresql/data
     ports:
       - '5432:5432'
     healthcheck:
@@ -24,7 +24,7 @@ services:
   redis:
     image: redis
     ports:
-      - '6380:6379'
+      - '6379:6379'
 
   app:
     build: .
@@ -61,4 +61,4 @@ services:
       - app
 
 volumes:
-  pg_data:
+  pgdata:
